@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductDAO {
-    boolean save(Product product);
+    public boolean save(Product product);
 
-    boolean delete(Product product);
+    public boolean delete(Product product);
 
-    boolean update(Product product);
+    public boolean update(Product product);
 
-    Product findByOVChipkaart(OVChipkaart ovchipkaart);
+    public List<Product> findByOVChipkaart(OVChipkaart ovchipkaart);
 
-    List<Product> findAll() throws SQLException;
+    public List<Product> findAll() throws SQLException;
 }

@@ -72,5 +72,16 @@ public class Product {
     public void setOvchipkaart(List<OVChipkaart> ovchipkaart) {
         this.ovchipkaart = ovchipkaart;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productnummer=" + productnummer +
+                ", naam='" + naam + '\'' +
+                ", beschrijving='" + beschrijving + '\'' +
+                ", prijs=" + prijs +
+                ", ovchipkaart=" + ovchipkaart +
+                '}';
+    }
 }
 

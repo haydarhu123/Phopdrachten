@@ -1,7 +1,5 @@
 package DAO;
 
-import Model.Adres;
-import Model.OVChipkaart;
 import Model.Reiziger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,18 +11,22 @@ import javax.persistence.PersistenceException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ReizigerDAOHibernate implements ReizigerDAO{
+public class ReizigerDAOHibernate implements ReizigerDAO {
     private SessionFactory sessionfactory;
+    private Session ssn;
+
+    public ReizigerDAOHibernate(Session ssn) {
+        this.ssn = ssn;
+    }
 
     @Override
     public boolean save(Reiziger reiziger) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.save(reiziger);
+            ssn.save(reiziger);
             transaction.commit();
-
             return true;
         } catch (PersistenceException exception) {
             transaction.rollback();
@@ -36,17 +38,17 @@ public class ReizigerDAOHibernate implements ReizigerDAO{
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean delete(Reiziger reiziger) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.delete(reiziger);
+            ssn.delete(reiziger);
             transaction.commit();
 
             return true;
@@ -60,17 +62,17 @@ public class ReizigerDAOHibernate implements ReizigerDAO{
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean update(Reiziger reiziger) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.update(reiziger);
+            ssn.update(reiziger);
             transaction.commit();
 
             return true;
@@ -84,33 +86,33 @@ public class ReizigerDAOHibernate implements ReizigerDAO{
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
-    public Reiziger findById(int id) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Reiziger reiziger = session.get(Reiziger.class, id);
-        session.close();
+    public Reiziger findById(int id) {
+        Session ssn = sessionfactory.openSession();
+        Reiziger reiziger = ssn.get(Reiziger.class, id);
+        ssn.close();
         return reiziger;
     }
 
     @Override
-    public List<Reiziger> findByGbdatum(String datum) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Query query = session.createQuery("FROM Reiziger where geboortedatum = :datum");
+    public List<Reiziger> findByGbdatum(String datum) {
+        Session ssn = sessionfactory.openSession();
+        Query query = ssn.createQuery("FROM Reiziger where geboortedatum = :datum");
         query.setParameter("datum", datum);
         List<Reiziger> reiziger = query.list();
-        session.close();
+        ssn.close();
         return reiziger;
     }
 
     @Override
     public List<Reiziger> findAll() throws SQLException {
-        Session session = sessionfactory.openSession();
-        List<Reiziger> reiziger = session.createQuery("from Reiziger ").list();
-        session.close();
+        Session ssn = sessionfactory.openSession();
+        List<Reiziger> reiziger = ssn.createQuery("from Reiziger ").list();
+        ssn.close();
 
         return reiziger;
     }

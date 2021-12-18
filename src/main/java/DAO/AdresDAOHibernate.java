@@ -13,15 +13,20 @@ import java.util.List;
 
 public class AdresDAOHibernate implements AdresDAO {
     private SessionFactory sessionfactory;
+    private Session ssn;
+
+    public  AdresDAOHibernate(Session ssn){
+        this.ssn = ssn;
+    }
 
 
     @Override
     public boolean save(Adres adres) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.save(adres);
+            ssn.save(adres);
             transaction.commit();
 
             return true;
@@ -35,17 +40,17 @@ public class AdresDAOHibernate implements AdresDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean delete(Adres adres) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.delete(adres);
+            ssn.delete(adres);
             transaction.commit();
 
             return true;
@@ -59,17 +64,17 @@ public class AdresDAOHibernate implements AdresDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean update(Adres adres) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.update(adres);
+            ssn.update(adres);
             transaction.commit();
 
             return true;
@@ -83,23 +88,23 @@ public class AdresDAOHibernate implements AdresDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public Adres findByReiziger(Reiziger reiziger) throws SQLException {
-        Session session = sessionfactory.openSession();
-        Adres adres = session.get(Adres.class, reiziger.getId());
-        session.close();
+        Session ssn = sessionfactory.openSession();
+        Adres adres = ssn.get(Adres.class, reiziger.getId());
+        ssn.close();
         return adres;
     }
 
     @Override
     public List<Adres> findAll() throws SQLException {
-        Session session = sessionfactory.openSession();
-        List<Adres> adres = session.createQuery("from Adres").list();
-        session.close();
+        Session ssn = sessionfactory.openSession();
+        List<Adres> adres = ssn.createQuery("from Adres").list();
+        ssn.close();
 
         return adres;
     }

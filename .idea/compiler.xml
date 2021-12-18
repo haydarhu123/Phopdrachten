@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Hibernate p6p7" />
+        <module name="Hibernate p6&amp;p7" />
       </profile>
     </annotationProcessing>
   </component>

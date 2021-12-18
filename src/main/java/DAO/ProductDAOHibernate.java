@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Adres;
 import Model.OVChipkaart;
 import Model.Product;
 import Model.Reiziger;
@@ -8,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.query.Query;
 
 import javax.persistence.PersistenceException;
 import java.sql.SQLException;
@@ -15,14 +15,19 @@ import java.util.List;
 
 public class ProductDAOHibernate implements ProductDAO {
     private SessionFactory sessionfactory;
+    private Session ssn;
+
+    public ProductDAOHibernate(Session ssn){
+        this.ssn = ssn;
+    }
 
     @Override
     public boolean save(Product product) {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.save(product);
+            ssn.save(product);
             transaction.commit();
 
             return true;
@@ -36,17 +41,17 @@ public class ProductDAOHibernate implements ProductDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean delete(Product product) {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.delete(product);
+            ssn.delete(product);
             transaction.commit();
 
             return true;
@@ -60,17 +65,17 @@ public class ProductDAOHibernate implements ProductDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
     public boolean update(Product product) {
-        Session session = sessionfactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Session ssn = sessionfactory.openSession();
+        Transaction transaction = ssn.beginTransaction();
 
         try {
-            session.update(product);
+            ssn.update(product);
             transaction.commit();
 
             return true;
@@ -84,23 +89,25 @@ public class ProductDAOHibernate implements ProductDAO {
             }
             throw exception;
         } finally {
-            session.close();
+            ssn.close();
         }
     }
 
     @Override
-    public Product findByOVChipkaart(OVChipkaart ovchipkaart) {
-        Session session = sessionfactory.openSession();
-        Product product = session.get(OVChipkaart.class, ovchipkaart.getReiziger_id());
-        session.close();
+    public List<Product> findByOVChipkaart(OVChipkaart ovchipkaart) {
+        Session ssn = sessionfactory.openSession();
+        Query query = ssn.createQuery("FROM Product where OVChipkaart = : reiziger");
+        query.setParameter("reiziger", ovchipkaart);
+        List<Product> product = query.list();
+        ssn.close();
         return product;
     }
 
     @Override
     public List<Product> findAll() throws SQLException {
-        Session session = sessionfactory.openSession();
-        List<Product> product = session.createQuery("from Product").list();
-        session.close();
+        Session ssn = sessionfactory.openSession();
+        List<Product> product = ssn.createQuery("from Product").list();
+        ssn.close();
 
         return product;
     }
