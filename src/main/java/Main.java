@@ -8,14 +8,6 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import java.sql.SQLException;
 
-
-/**
- * Testklasse - deze klasse test alle andere klassen in deze package.
- *
- * System.out.println() is alleen in deze klasse toegestaan (behalve voor exceptions).
- *
- * @author tijmen.muller@hu.nl
- */
 public class Main {
     // Creëer een factory voor Hibernate sessions.
     private static final SessionFactory factory;
@@ -43,9 +35,6 @@ public class Main {
         testFetchAll();
     }
 
-    /**
-     * P6. Haal alle (geannoteerde) entiteiten uit de database.
-     */
     private static void testFetchAll() {
         Session session = getSession();
         try {

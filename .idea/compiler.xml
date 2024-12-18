@@ -8,7 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Hibernate p6p7" />
         <module name="Hibernate p6&amp;p7" />
+        <module name="P2H_tm_P5H" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="m_P5H" target="13" />
+    </bytecodeTargetLevel>
   </component>
 </project>
